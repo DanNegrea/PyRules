@@ -7,13 +7,12 @@ from java.awt.event import FocusListener, ActionListener, MouseAdapter
 from java.net import URI
 
 from pprint import pformat
-from PyUtil import Strings
 
 import base64
 import traceback
 
 class BurpExtender(IBurpExtender, IExtensionStateListener, IHttpListener, ITab, FocusListener, ActionListener, MouseAdapter):
-	_version = "0.1"
+	_version = "0.2"
 	_name = "PyRules"
 	_varsStorage = _name+"_vars"
 	_scriptStorage = _name+"_script"
@@ -129,7 +128,13 @@ class BurpExtender(IBurpExtender, IExtensionStateListener, IHttpListener, ITab, 
 		if vars:
 			vars = base64.b64decode(vars)
 		else:
-			vars = Strings.vars_intial
+			# try to load the example
+			try:
+				with open("examples/Simple-CSRF-vars.py") as fvars:
+					vars =  fvars.read()
+			# load the default text
+			except:
+				vars = Strings.vars
 		
 		## initiate the persistant variables
 		locals_ = {}
@@ -146,8 +151,14 @@ class BurpExtender(IBurpExtender, IExtensionStateListener, IHttpListener, ITab, 
 		script = callbacks.loadExtensionSetting( self._scriptStorage )
 		if script:
 			script = base64.b64decode(script)
-		else: 
-			script = Strings.script_intial
+		else:
+			# try to load the example
+			try:
+				with open("examples/Simple-CSRF-script.py") as fscript:
+					script =  fscript.read()
+			# load the default text
+			except:
+				script = Strings.script
 		
 		## compile the rules
 		self._script = script
@@ -265,7 +276,7 @@ class BurpExtender(IBurpExtender, IExtensionStateListener, IHttpListener, ITab, 
 			# execute the script/rules
 			try:
 				exec(self.getCode, {}, locals_)
-			# catch exit() call insite the rule
+			# catch exit() call inside the rule
 			except SystemExit:
 				pass
 			
@@ -304,3 +315,25 @@ class BurpExtender(IBurpExtender, IExtensionStateListener, IHttpListener, ITab, 
 		verticalScrollBar = self.jScrollConsolePane.getVerticalScrollBar()
 		verticalScrollBar.setValue( verticalScrollBar.getMaximum() )
 		return
+		
+class Strings(object):
+	docs_titel = "Docs & Examples"
+	docs_tooltip = "See the documentation & snippets"
+
+	console_state = "#State\n"
+	console_log = "#Logged data\n"	
+	extra_line = "\n\n"
+
+	console_disable = """
+With PyRules you can write Python to create rules:
+* that modifiy the requests and responses,
+* while maintaining some state between calls.
+  
+Start by declaring the persistant variables (below)
+and continue with defining the rules (right).
+Set the plugin in motion using the checkbox (top left).
+
+Click on 'Docs' to see ready to use examples and snippets.
+"""
+	vars = "#Initial values for persistant variables go here"
+	script = "#Python rules go here"

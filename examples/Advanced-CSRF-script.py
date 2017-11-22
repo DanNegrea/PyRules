@@ -2,13 +2,6 @@
 #  * when the new token length is different from the old token length
 #  * by using the API that makes sure the "Content-Length" gets updated.
 
-#------------------------------------------------------------------
-
-#Initial values for persistant variables go here
-token = ""
-
-#------------------------------------------------------------------
-
 #Python rules go here
 import re
 

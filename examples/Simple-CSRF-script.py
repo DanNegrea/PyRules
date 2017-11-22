@@ -4,13 +4,6 @@
 #  * how log information
 # Notice: the request must have the same length as prior the replace. Another advanced example demonstrates how get the "Content-Length" updated.
 
-#------------------------------------------------------------------
-
-#Initial values for persistant variables go here
-token = ""
-
-#------------------------------------------------------------------
-
 #Python rules go here
 import re
 
