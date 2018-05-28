@@ -1,20 +1,20 @@
-# PyRules v0.1
+# PyRules v0.3
 [@sec3ty](https://twitter.com/sec3ty)
 
 PyRules is a Burp Suite extension that provides a simple way to manipulate requests and responses with Python. The state between multiple requests/responses is saved using persistent variables, this way you can create complex rules in a flexible way.
 
-The extension has three panels:
+In each Tab there are three panels:
 1. Console screen: to display short messages and the logged data.
 
-2. Variable screen: Here the persistent variables are initialized (optional).
+2. Variable screen: here the persistent variables are defined (optional). 
 
-3. Rules screen: the place were the Python script is defined.
+3. Rules screen: the place contains the Python script. This will run with each request/response or on demand by clicking `Run once` 
 
-Once the setup is complete, you only need to enable the extension and it will do it's job.
+Once the setup is complete, you only need to enable the tab and it will do it's job.
 
 # Installation
 
-For Manual installation, download PyRules.py and PyUtil.py from this repository. From within Burp Suite, select Extender, click Add button, change the Extension type to Python and select PyRules.py.
+For Manual installation, download PyRules.py from this repository. From within Burp Suite, select Extender, click Add button, change the Extension type to Python and select PyRules.py.
 
 ## Requirements for usage
 Jython version 2.7.0 or greater needs to be imported. More infos here:
@@ -26,15 +26,14 @@ https://portswigger.net/burp/help/extender.html#options_pythonenv
 
 Initial values for persistant variables go here.
 
-* Every edit of the code in intialization screen (actually focus lost) triggers the execution of the code listed here.
-* The state will be maintained when disabling / enabling the extension through the `PyRules` checkbox
+* Every edit of the code in intialization screen (focus lost) triggers the execution of the code listed here.
+* The state will be maintained when disabling / enabling the tab. To reinitialize the variables click inside this area.
 
 ## Rules screen (right)
 
-Python script goes here. This code will be executed with each request and response.
+Python script goes here. This code will be executed with each request and response or on demand by clicking `Run once` .
 
 Available variables are:
-* `extender` 
 * `callbacks` 
 * `helpers` 
 * `toolFlag` 
@@ -43,7 +42,7 @@ Available variables are:
 * `log` 
 To understand how to use them see the provided examples and the api [docs](https://portswigger.net/burp/extender/api).
 
-**Notice** The code from the simple example should be used for quick tasks. In advanced example the called functions make sure that the content type of the request gets updated. 
+**Notice** The code from the simple example should be used for quick tasks. In the advanced example the called functions make sure that the content type of the request gets updated. 
 
 ## Tipps
 
@@ -65,7 +64,8 @@ token = ""
 - `TOOL_REPEATER`
 - `TOOL_INTRUDER`
 - `TOOL_SCANNER`
-- or other value defined [here](https://portswigger.net/burp/extender/api/burp/IBurpExtenderCallbacks.html)
+-  other value defined by Burp are [here](https://portswigger.net/burp/extender/api/burp/IBurpExtenderCallbacks.html)
+- 999 identifies the execution triggered by `Run once`
 
 Questions or suggestions?
 [@sec3ty](https://twitter.com/sec3ty)
