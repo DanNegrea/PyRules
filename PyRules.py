@@ -42,9 +42,7 @@ class BurpExtender(IBurpExtender, ITab, IHttpListener, IExtensionStateListener):
 		return self.name
 
 	def extensionUnloaded(self):
-		print "extensionUnloaded start"
 		self._ui.cacheTabs()
-		print "extensionUnloaded end"
 	
 	def processHttpMessage(self, toolFlag, messageIsRequest, messageInfo):
 		self._ui.executeAll(toolFlag, messageIsRequest, messageInfo)	
@@ -261,9 +259,7 @@ class JTabPanel(JSplitPane, ActionListener, FocusListener):
 		self.jWiki.setContentAreaFilled(False)
 		
 		#Console text area
-		jConsoleText = JTextArea()
-		jConsoleText.setFont(Font('Monospaced', Font.PLAIN, 10))
-		jConsoleText.setBackground(Color(244, 246, 247))
+		jConsoleText = JTextArea()		
 		jConsoleText.setEditable(0)
 		jConsoleText.setWrapStyleWord(1)
 		jConsoleText.setRows(10)
