@@ -78,7 +78,7 @@ class UI():
 		# the main container
 		jTabbedPane= JTabbedPane()
 		
-		if noTabs>0:
+		if serialized:
 			for i in range(noTabs):
 				jTabTitle = JTabTitle(self, cachedTabs[i].jTabTitle)
 				jTabPanel = JTabPanel(self)
