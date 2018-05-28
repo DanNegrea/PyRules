@@ -164,6 +164,10 @@ class UI():
 		idx = self.jTabbedPane.indexOfComponent(component)
 		self.jTabbedPane.remove(idx)
 		
+	def initVars(self, tabComponent):
+		idx = self.jTabbedPane.indexOfTabComponent(tabComponent)
+		self.jTabbedPane.getComponentAt(idx).initVars()
+		
 	def executeAll(self, toolFlag, messageIsRequest, messageInfo):
 		noTabs = self.jTabbedPane.getTabCount()
 		# iterate on all tabs except the last "..." tab
@@ -214,7 +218,10 @@ class JTabTitle(JPanel, ActionListener):
 	def actionPerformed(self, event):
 		#Check box was clicked
 		if self.jStatusBtn == event.getSource():
+			if self.jStatusBtn.isSelected():
+				self._ui.initVars( self )
 			pass #do nothing for now
+			
 	def setTabName(self, tabName):
 		self.jLabel.setText(tabName)
 		
@@ -485,9 +492,10 @@ class JTabPanel(JSplitPane, ActionListener, FocusListener):
 			
 		#Run once button clicked
 		if self.jRun == event.getSource():
-			end = self.jScriptPane.document.length
-			scriptText= self.jScriptPane.document.getText(0, end)
-			self._executor.execute(scriptText, 999)		
+			# request to init the vars (if edited)
+			self.initVars()
+			# request execution with toolFlag set to 999 (Run once)
+			self.execute(999)	
 		
 	def focusGained(self, event):
 		pass
@@ -495,13 +503,18 @@ class JTabPanel(JSplitPane, ActionListener, FocusListener):
 	#Reinitialize the state variables (Vars)
 	def focusLost(self, event):		
 		if self.jVarsPane == event.getSource():
-			# get the text from the pane
-			end = self.jVarsPane.document.length
-			varsText= self.jVarsPane.document.getText(0, end)	   
-			self._executor.init( varsText )
+			self.initVars()
 	
+	#Init the vars (persistant variables)
+	def initVars(self):	
+		# get the text from the Vars pane
+		end = self.jVarsPane.document.length
+		varsText= self.jVarsPane.document.getText(0, end)
+		# the executor initializes Vals if required
+		self._executor.init( varsText )
+			
 	#Call the executor
-	def execute(self, toolFlag, messageIsRequest, messageInfo):
+	def execute(self, toolFlag, messageIsRequest=None, messageInfo=None):
 		end = self.jScriptPane.document.length
 		scriptText= self.jScriptPane.document.getText(0, end)
 		self._executor.execute( scriptText, toolFlag, messageIsRequest, messageInfo )
@@ -602,6 +615,7 @@ class FileUtils():
 # - contains:
 #	* the context of the execution
 #		* _vars   		  - the persistant state variables
+#		* _initializedVars- the (already) initialized Vars
 #		* _script 		  - the script (py rules) from the panel 
 #		* _compiledScript - the script (py rules) that was already compile
 #		* _code			  - the compiled code 
@@ -615,6 +629,7 @@ class Executor():
 		self._callbacks = callbacks
 		
 		self._vars 	 = {}
+		self._initializedVars = "random_value_:)"
 		self._script = ""
 		self._compiledScript = "random_value_:)"
 		self._code = {}
@@ -622,10 +637,16 @@ class Executor():
 	# compute the new values for vars (initialize)
 	def init(self, varsText):
 		error = ""
+		
+		# skip if the Vars didn't changed
+		if varsText == self._initializedVars:
+			return
+			
 		try:
 			locals_ = {}
 			exec(varsText, {}, locals_)
 			self._vars = locals_
+			self._initializedVars = varsText
 		except:
 			self._vars = {}
 			self._tab.log( sys.exc_info(), "err")
