@@ -1,6 +1,10 @@
+#Declare your variables here
+
+token = ""
+### Above are vars / Below are py rules ###
 ## Advanved example for tracking a "CSRFtoken" token
-#  * when the new token length is different from the old token length
-#  * by using the API that makes sure the "Content-Length" gets updated.
+#  * the new token length may be different from previous values
+#  * makes use of Burp API to compose the request (this way "Content-Length" gets updated)
 
 #Python rules go here
 import re

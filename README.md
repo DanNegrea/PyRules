@@ -1,4 +1,4 @@
-# PyRules v0.3
+# PyRules v0.4
 [@sec3ty](https://twitter.com/sec3ty)
 
 PyRules is a Burp Suite extension that provides a simple way to manipulate requests and responses with Python. The state between multiple requests/responses is saved using persistent variables, this way you can create complex rules in a flexible way.

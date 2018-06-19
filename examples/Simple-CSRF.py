@@ -1,8 +1,12 @@
+#Declare your variables here
+
+token = ""
+### Above are vars / Below are py rules ###
 ## Simple example for tracking a "CSRFtoken" token that demonstrates:
 #  * how to disable the plug in for a certain tool
 #  * how to handle a request / response
-#  * how log information
-# Notice: the request must have the same length as prior the replace. Another advanced example demonstrates how get the "Content-Length" updated.
+#  * how to log information
+# Notice: the modified request must have the same length as prior the procession. Another advanced example demonstrates how "Content-Length" can be updated.
 
 #Python rules go here
 import re

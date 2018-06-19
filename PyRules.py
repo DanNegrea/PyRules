@@ -492,6 +492,14 @@ class JTabPanel(JSplitPane, ActionListener, FocusListener):
 			
 		#Run once button clicked
 		if self.jRun == event.getSource():
+			if self.isRequestFocusEnabled():
+				print "is RequestFocusEnabled"
+			else:
+				print "is NOT RequestFocusEnabled"
+			if self.isFocusOwner():
+				print "is FocusOwner"
+			else:
+				print "is NOT FocusOwner"
 			# request to init the vars (if edited)
 			self.initVars()
 			# request execution with toolFlag set to 999 (Run once)
@@ -742,9 +750,9 @@ Start by declaring the persistant variables (below)
 and continue with defining the rules (right).
 Set the plugin in motion using the checkbox (top left).
 
-Click on 'Docs' to see ready to use examples and snippets.
+Click on 'Wiki' to see ready to use examples and snippets.
 """
-	jVarsPane_header 	= "#Initial values go here \n\n"
+	jVarsPane_header 	= "#Declare your variables here \n\n"
 	jScriptPane_header 	= "#Python rules go here \n\n"
 
 	
