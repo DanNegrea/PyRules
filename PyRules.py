@@ -97,15 +97,15 @@ class UI():
 			
 			# try to load the example
 			try:
-				# read from file				
+				# read from file
 				examplePath = FileSystems.getDefault().getPath(os.getcwd() + "/examples/Simple-CSRF.py")
-				(vars, script) = FileUtils.read(examplePath)				
+				(vars, script) = FileUtils.read(examplePath)
 			# load the default text
 			except:
 				print pformat(sys.exc_info())
 				vars = Strings.jVarsPane_header
 				script = Strings.jScriptPane_header
-			
+
 			jTabPanel.jVarsPane.setText(vars)
 			jTabPanel.jScriptPane.setText(script)
 
@@ -156,11 +156,25 @@ class UI():
 		# remove the "..." tab
 		self.jTabbedPane.removeTabAt(lastIdx)
 		
+		# try to load the example in the new tab
+		try:
+			# read from file
+			examplePath = FileSystems.getDefault().getPath(os.getcwd() + "/examples/Simple-CSRF.py")
+			(vars, script) = FileUtils.read(examplePath)
+		# load the default text
+		except:
+			print pformat(sys.exc_info())
+			vars = Strings.jVarsPane_header
+			script = Strings.jScriptPane_header
+
+		jTabPanel.jVarsPane.setText(vars)
+		jTabPanel.jScriptPane.setText(script)
+
 		self.jTabbedPane.addTab("", JLabel(""))
 		self.jTabbedPane.setTabComponentAt(lastIdx, jTabTitle)
 		self.jTabbedPane.setComponentAt(lastIdx, jTabPanel)
-		
-		# add the "..." tab		
+
+		# add the "..." tab
 		self.jTabbedPane.addTab("", JLabel(""))
 		self.jTabbedPane.setTabComponentAt(lastIdx+1, JNewTabTitle(self))		
 		self.jTabbedPane.setSelectedIndex(lastIdx)
