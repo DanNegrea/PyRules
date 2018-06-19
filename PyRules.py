@@ -7,8 +7,6 @@ from java.awt.event import FocusListener, ActionListener, MouseListener
 from java.net import URI
 from java.nio.file import Files, FileSystems
 
-from java.lang import System
-
 import pickle
 
 
@@ -23,7 +21,7 @@ from org.python.core.util import StringUtil
 #		*	getUiComponent & getTabCaption  - ITab functions implementations
 
 class BurpExtender(IBurpExtender, ITab, IHttpListener, IExtensionStateListener):
-	version = "0.3"
+	version = "0.4"
 	name = "PyRules"
 	
 	def registerExtenderCallbacks(self, callbacks):
