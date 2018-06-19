@@ -7,6 +7,7 @@ from java.awt.event import FocusListener, ActionListener, MouseListener
 from java.net import URI
 from java.nio.file import Files, FileSystems
 
+from java.lang import System
 
 import pickle
 
@@ -89,9 +90,25 @@ class UI():
 				jTabbedPane.setTabComponentAt(i, jTabTitle)
 				jTabbedPane.setComponentAt(i, jTabPanel)
 		
-		else:		
+		else:
+			# add the first tab
 			jTabTitle = JTabTitle(self, Strings.jTabTitle_default_name)
-			jTabPanel = JTabPanel(self)			
+			jTabPanel = JTabPanel(self)				
+			
+			# try to load the example
+			try:
+				# read from file				
+				examplePath = FileSystems.getDefault().getPath(os.getcwd() + "/examples/Simple-CSRF.py")
+				(vars, script) = FileUtils.read(examplePath)				
+			# load the default text
+			except:
+				print pformat(sys.exc_info())
+				vars = Strings.jVarsPane_header
+				script = Strings.jScriptPane_header
+			
+			jTabPanel.jVarsPane.setText(vars)
+			jTabPanel.jScriptPane.setText(script)
+
 			jTabbedPane.addTab("", JLabel(""))
 			jTabbedPane.setTabComponentAt(0, jTabTitle)
 			jTabbedPane.setComponentAt(0, jTabPanel)
